@@ -1,46 +1,25 @@
-import React, { useEffect } from 'react';
-import mayuriGif from '../assets/mayuri.gif';
-import style from './Container.module.css';
-
-const useMousePosition = () => {
-        const [
-            mousePosition,
-            setMousePosition
-        ] = React.useState({ x: null, y: null });
-
-        React.useEffect(() => {
-            const updateMousePosition = ev => {
-            setMousePosition({ x: ev.clientX, y: ev.clientY });
-            };
-
-            window.addEventListener('mousemove', updateMousePosition);
-
-            return () => {
-            window.removeEventListener('mousemove', updateMousePosition);
-            };
-        }, []);
-
-        return mousePosition;
-    };
+import React, { useRef, useState, useEffect} from 'react';
+import mayuriGif from '../../mates/mayuri.gif';
+import style from './container.module.css';
 
 const Container = () => {
-    const [scale, setScale] = React.useState(2);
+    // variables for image
+    const [scale, setScale] = useState(2);
     const defaultWidth = 100;
-
+    const imgRef = useRef(null);
 
     useEffect(() => {
-        window.electronAPI.setClickable(false);
-    }, []);
-    
+        setScale(2); // for testing purpose only, remove later
+        console.log('scale:', scale);
+    }, [scale]);
+
     return (
         <div className={style.container}>
             <img 
                 src={mayuriGif} 
                 alt='sewekGIF' 
-                style={{ width: `${scale*defaultWidth}px`, height: 'auto' }}
-                onMouseEnter={() => {window.electronAPI.setClickable(true)}}
-                onMouseLeave={() => window.electronAPI.setClickable(false)}
-                onClick={() => console.log("hehehehehe")}
+                style={{ width: `${scale * defaultWidth}px`, height: 'auto' }}
+                ref={imgRef}
             />
         </div>
     );
